@@ -33,9 +33,6 @@ public class Main {
 
             }
 
-            int szam;
-            szam = (int)(Math.random() * (choice2-1)) + 0;
-
             int choiceRow = choice2-1;
             int choiceColumn = 0;
 
@@ -49,43 +46,40 @@ public class Main {
             int szam1 = 0;
             int szam2 = 0;
 
+            boolean state = false;
 
-            while(continuegame < 5){
+            while(!state) {
 
-                boolean hibas = false;
+                state = false;
 
                 System.out.println("Következő lépés? 1 - jobbra fel; 2 - balra fel; 3 jobbra le; 4 - balra le");
                 int choice4 = beSzam.nextInt();
                 game[choiceRow][choiceColumn] = 0;
 
-                if(choice4 == 1){
-                    szam1 = -1;
-                    szam2 = 1;
-                }
-                if(choice4 == 2){
-                    szam1 = -1;
-                    szam2 = -1;
-                }
-                if(choice4 == 3){
-                    szam1 = 1;
-                    szam2 = 1;
-                }
-                if(choice4 == 4){
-                    szam1 = 1;
-                    szam2 = -1;
+                int[] lepes = makeStep(choice4);
 
-                }
-                if(choiceRow + szam1 < 0 || choiceRow + szam1 > choice2 || choiceColumn + szam2 < 0 || choiceColumn + szam2 > choice2 || game[choiceRow + szam1][choiceColumn + szam2] == dog)
+
+                if (choiceRow + lepes[0] < 0 || choiceRow + lepes[0] > choice2-1 || choiceColumn + lepes[1] < 0 || choiceColumn + lepes[1] > choice2-1)
                     System.out.println("Hibás lépés");
-                else{
-                    game[choiceRow + szam1][choiceColumn + szam2] = fox;
-                    choiceRow += szam1;
-                    choiceColumn += szam2;
-                    continuegame++;
-                    kiir(game);
+                else if (game[choiceRow + lepes[0]][choiceColumn + lepes[1]] == dog) {
+                    System.out.println("Vége a játéknak.");
+                    state = true;
                 }
-
-            }
+                else {
+                    if(choiceRow + lepes[0] == 0)
+                    {
+                        System.out.println("Gratulálok, nyertél!");
+                        state = true;
+                    }
+                    else {
+                        game[choiceRow + lepes[0]][choiceColumn + lepes[1]] = fox;
+                        choiceRow += lepes[0];
+                        choiceColumn += lepes[1];
+                        continuegame++;
+                        kiir(game);
+                        }
+                    }
+                }
 
             System.out.println("Szeretnél játszani? i/n");
             choice = beSzoveg.nextLine();
@@ -108,6 +102,41 @@ public class Main {
             System.out.println("");
 
         }
+    }
+
+    static int randomizeDogs(int sizeOfTable){
+        int step = 0;
+        return step;
+    }
+
+    static int[] makeStep(int sz){
+        int[] szam1 = new int[2];
+        int szam2 = 0;
+
+        if (sz == 1) {
+            szam1[0] = -1;
+            szam1[1] = 1;
+        }
+        if (sz == 2) {
+            szam1[0] = -1;
+            szam1[1] = -1;
+        }
+        if (sz == 3) {
+            szam1[0] = 1;
+            szam1[1] = 1;
+        }
+        if (sz == 4) {
+            szam1[0] = 1;
+            szam1[1] = -1;
+
+        }
+
+
+        return szam1;
+    }
+
+    static void makeDogStep(int[][] t){
+
     }
 
 }
